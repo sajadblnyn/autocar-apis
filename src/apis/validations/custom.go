@@ -1,25 +1,32 @@
 package validations
 
 import (
-	"log"
-	"regexp"
+	"errors"
 
 	"github.com/go-playground/validator/v10"
 )
 
-func IranianMobileValidator(fl validator.FieldLevel) bool {
-	mobile, ok := fl.Field().Interface().(string)
-	if !ok {
-		return false
-	}
-	ok, err := regexp.MatchString(`^(0|0098|\+98)9(0[1-5]|[1 3]\d|2[0-2]|98)\d{7}$`, mobile)
-	if err != nil {
-		log.Print(err.Error())
-		return false
-	}
-	if !ok {
-		return false
-	}
-	return true
+type ValidationError struct {
+	Property string `json:"property"`
+	Tag      string `json:"tag"`
+	Value    string `json:"value"`
+	Message  string `json:"message"`
+}
 
+func GetValidationErrors(err error) *[]ValidationError {
+	var validationErrors []ValidationError
+	var ve validator.ValidationErrors
+
+	if errors.As(err, &ve) {
+		for _, v := range ve {
+			validationErrors = append(validationErrors, ValidationError{
+				Property: v.Field(),
+				Tag:      v.Tag(),
+				Value:    v.Param(),
+				Message:  v.Error(),
+			})
+		}
+		return &validationErrors
+	}
+	return nil
 }

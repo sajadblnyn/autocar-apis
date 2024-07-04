@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sajadblnyn/autocar-apis/apis/helper"
 )
 
 type TestHandler struct {
@@ -14,26 +15,26 @@ func NewTestHandler() *TestHandler {
 }
 
 func (t *TestHandler) BindQuery(c *gin.Context) {
-	c.JSON(http.StatusOK, struct {
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(struct {
 		Id string `json:"id"`
 	}{
 		Id: c.Query("id"),
-	})
+	}, true, 1))
 	return
 }
 
 func (t *TestHandler) BindQueryArray(c *gin.Context) {
 
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"Ids": c.QueryArray("id"),
-	})
+	}, true, 1))
 	return
 }
 
 func (t *TestHandler) BindHeader1(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"UserId": c.GetHeader("UserId"),
-	})
+	}, true, 1))
 	return
 }
 
@@ -43,7 +44,7 @@ func (t *TestHandler) BindHeader2(c *gin.Context) {
 		Browser string
 	}{}
 	c.ShouldBindHeader(&h)
-	c.JSON(http.StatusOK, h)
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(h, true, 1))
 	return
 }
 
@@ -55,14 +56,10 @@ func (t *TestHandler) BindJsonBody(c *gin.Context) {
 	}{}
 	err := c.ShouldBindJSON(&b)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, -1, err))
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"Body": b,
-	})
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(b, true, 1))
 	return
 }
 
@@ -72,35 +69,29 @@ func (t *TestHandler) BindForm(c *gin.Context) {
 		Family string
 	}{}
 	c.ShouldBind(&b)
-	c.JSON(http.StatusOK, gin.H{
-		"Form": b,
-	})
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(b, true, 1))
 	return
 }
 
 func (t *TestHandler) BindFormFile(c *gin.Context) {
 	f, err := c.FormFile("file")
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, -1, err))
 	}
 	err = c.SaveUploadedFile(f, "file.txt")
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, -1, err))
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"file": f.Filename,
-	})
+	}, true, 1))
 	return
 }
 
 func (t *TestHandler) BindUri(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"id": c.Param("id"),
-	})
+	}, true, 1))
 	return
 }

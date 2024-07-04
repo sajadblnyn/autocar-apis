@@ -4,13 +4,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sajadblnyn/autocar-apis/apis/helper"
 )
 
 type HealthHandler struct {
 }
 
 func (h *HealthHandler) Health(c *gin.Context) {
-	c.JSON(http.StatusOK, "im fine")
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse("im fine", true, 1))
 	return
 }
 
