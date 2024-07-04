@@ -2,20 +2,21 @@ package cache
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-redis/redis/v7"
 	"github.com/sajadblnyn/autocar-apis/config"
 )
 
-type Redis struct {
+type redisService struct {
 	redisClient *redis.Client
 }
 
-func newRedis() *Redis {
-	return &Redis{}
+func newRedis() *redisService {
+	return &redisService{}
 }
-func (r *Redis) Init(cfg *config.Config) {
+func (r *redisService) Init(cfg *config.Config) error {
 	r.redisClient = redis.NewClient(&redis.Options{
 		Addr:               fmt.Sprintf("%s:%s", cfg.Redis.Host, cfg.Redis.Port),
 		Password:           cfg.Redis.Password,
@@ -29,8 +30,16 @@ func (r *Redis) Init(cfg *config.Config) {
 		IdleCheckFrequency: cfg.Redis.IdleCheckFrequency * time.Microsecond,
 	})
 
+	_, err := r.redisClient.Ping().Result()
+	if err != nil {
+		return err
+	}
+	log.Println("cache service connection established")
+
+	return nil
+
 }
 
-func (r *Redis) Close() {
+func (r *redisService) Close() {
 	r.redisClient.Close()
 }

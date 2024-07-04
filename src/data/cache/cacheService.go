@@ -5,7 +5,7 @@ import (
 )
 
 type CacheService interface {
-	Init(cfg *config.Config)
+	Init(cfg *config.Config) error
 	Close()
 }
 
