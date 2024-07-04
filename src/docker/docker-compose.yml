@@ -44,7 +44,18 @@ services:
     networks:
       - autocar_network
     restart: unless-stopped
-
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: autocar_swagger
+    environment:
+      SWAGGER_JSON: /foo/swagger.json
+    volumes:
+      - ../docs:/foo
+    ports:
+      - "9090:8080"
+    networks:
+      - autocar_network
+    restart: unless-stopped
 volumes:
   postgres:
   pgadmin:
