@@ -12,18 +12,25 @@ import (
 	"github.com/sajadblnyn/autocar-apis/config"
 )
 
-func InitServer() {
-	cfg := config.GetConfig()
+func InitServer(cfg *config.Config) {
 	r := gin.New()
 
-	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+	RegisterCustomValidators()
+	RegisterMiddlewares(r, cfg)
+	RegisterRoutes(r)
+
+	r.Run(fmt.Sprintf(":%s", cfg.Server.ExternalPort))
+}
+
+func RegisterCustomValidators() {
+	v, ok := binding.Validator.Engine().(*validator.Validate)
+	if ok {
 		v.RegisterValidation("iran-mobile-validator", validations.IranianMobileValidator, true)
 		v.RegisterValidation("password", validations.PasswordValidator, true)
 
 	}
-	r.Use(middlewares.Cors(cfg))
-	r.Use(gin.Logger(), gin.Recovery() /*, middlewares.TestMiddleware()*/)
-
+}
+func RegisterRoutes(r *gin.Engine) {
 	v1 := r.Group("/api/v1/")
 	{
 		health := v1.Group("/health")
@@ -33,5 +40,9 @@ func InitServer() {
 		// test.Use(middlewares.TestMiddleware())
 		routers.Test(test)
 	}
-	r.Run(fmt.Sprintf(":%s", cfg.Server.ExternalPort))
+}
+
+func RegisterMiddlewares(r *gin.Engine, cfg *config.Config) {
+	r.Use(middlewares.Cors(cfg))
+	r.Use(gin.Logger(), gin.Recovery() /*, middlewares.TestMiddleware()*/)
 }
