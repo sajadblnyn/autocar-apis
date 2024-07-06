@@ -5,7 +5,7 @@
         "runMode": "release"
     },
     "logger": {
-        "filePath": "/app/logs/",
+        "filePath": "/app/logs/logs.log",
         "encoding": "json",
         "level": "debug",
         "logger": "zap"

@@ -2,10 +2,10 @@ package db
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/sajadblnyn/autocar-apis/config"
+	"github.com/sajadblnyn/autocar-apis/pkg/logging"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -13,6 +13,8 @@ import (
 type postgresDb struct {
 	dbClient *gorm.DB
 }
+
+var logger = logging.NewLogger(config.GetConfig())
 
 func (p *postgresDb) Init(cfg *config.Config) error {
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Tehran",
@@ -34,7 +36,7 @@ func (p *postgresDb) Init(cfg *config.Config) error {
 	sqlDb.SetMaxOpenConns(cfg.Postgres.MaxOpenConns)
 	sqlDb.SetConnMaxLifetime(cfg.Postgres.ConnMaxLifetime * time.Minute)
 
-	log.Println("db connection established")
+	logger.Info(logging.Database, logging.Startup, "database connection established successfully", nil)
 	return nil
 }
 func (p *postgresDb) Close() {

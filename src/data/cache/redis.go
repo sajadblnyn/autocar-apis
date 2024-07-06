@@ -2,12 +2,14 @@ package cache
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/go-redis/redis/v7"
 	"github.com/sajadblnyn/autocar-apis/config"
+	"github.com/sajadblnyn/autocar-apis/pkg/logging"
 )
+
+var logger = logging.NewLogger(config.GetConfig())
 
 type redisService struct {
 	redisClient *redis.Client
@@ -34,7 +36,7 @@ func (r *redisService) Init(cfg *config.Config) error {
 	if err != nil {
 		return err
 	}
-	log.Println("cache service connection established")
+	logger.Info(logging.CacheService, logging.Startup, "cache service connection established successfully", nil)
 
 	return nil
 

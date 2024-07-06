@@ -1,0 +1,4 @@
+{"level":"info","ts":"2024-07-06T12:36:05.164+0330","caller":"cache/redis.go:39","msg":"cache service connection established successfully","SubCategory":"Startup","Category":"CacheService"}
+{"level":"fatal","ts":"2024-07-06T12:36:05.165+0330","caller":"cmd/main.go:27","msg":"failed to connect to `host=127.0.0.1 user=admin database=autocar`: dial error (dial tcp 127.0.0.1:5432: connect: connection refused)","Category":"Database","SubCategory":"Startup","stacktrace":"main.main\n\t/home/sajadnyn/Desktop/7learn/go/autocar-apis/src/cmd/main.go:27\nruntime.main\n\t/usr/lib/go-1.22/src/runtime/proc.go:271"}
+{"level":"info","ts":"2024-07-06T12:37:09.777+0330","caller":"cache/redis.go:39","msg":"cache service connection established successfully","Category":"CacheService","SubCategory":"Startup"}
+{"level":"info","ts":"2024-07-06T12:37:09.790+0330","caller":"db/postgres.go:39","msg":"database connection established successfully","Category":"Database","SubCategory":"Startup"}

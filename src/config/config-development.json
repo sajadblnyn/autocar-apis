@@ -5,7 +5,7 @@
         "runMode": "debug"
     },
     "logger": {
-        "filePath": "../logs/",
+        "filePath": "../logs/logs.log",
         "encoding": "json",
         "level": "debug",
         "logger": "zap"
