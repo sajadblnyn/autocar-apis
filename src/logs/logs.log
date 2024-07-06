@@ -12,3 +12,5 @@
 {"level":"info","AppName":"AutoCar","Logger":"zerolog","Category":"Database","SubCategory":"Startup","time":"2024-07-06T14:46:23+03:30","message":"database connection established successfully"}
 {"level":"info","ts":"2024-07-06T14:46:54.762+0330","caller":"cache/redis.go:39","msg":"cache service connection established successfully","AppName":"AutoCar","Logger":"zapp","Category":"CacheService","SubCategory":"Startup"}
 {"level":"info","ts":"2024-07-06T14:46:54.772+0330","caller":"db/postgres.go:39","msg":"database connection established successfully","AppName":"AutoCar","Logger":"zapp","Category":"Database","SubCategory":"Startup"}
+{"level":"info","ts":"2024-07-06T22:12:40.564+0330","caller":"cache/redis.go:39","msg":"cache service connection established successfully","AppName":"AutoCar","Logger":"zapp","Category":"CacheService","SubCategory":"Startup"}
+{"level":"info","ts":"2024-07-06T22:12:40.575+0330","caller":"db/postgres.go:39","msg":"database connection established successfully","AppName":"AutoCar","Logger":"zapp","Category":"Database","SubCategory":"Startup"}
