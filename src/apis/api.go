@@ -44,5 +44,6 @@ func RegisterRoutes(r *gin.Engine) {
 
 func RegisterMiddlewares(r *gin.Engine, cfg *config.Config) {
 	r.Use(middlewares.Cors(cfg))
+	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(gin.Logger(), gin.Recovery() /*, middlewares.TestMiddleware()*/)
 }
