@@ -2,7 +2,8 @@
     "server": {
         "internalPort": 5005,
         "externalPort": 5005,
-        "runMode": "debug"
+        "runMode": "debug",
+        "defaultADminPassword":"41524152sjd_B"
     },
     "logger": {
         "filePath": "../logs/logs.log",

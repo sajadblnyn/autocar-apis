@@ -21,9 +21,10 @@ type Config struct {
 }
 
 type ServerConfig struct {
-	InternalPort string
-	ExternalPort string
-	RunMode      string
+	DefaultAdminPassword string
+	InternalPort         string
+	ExternalPort         string
+	RunMode              string
 }
 
 type LoggerConfig struct {

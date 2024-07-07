@@ -2,7 +2,9 @@
     "server": {
         "internalPort": 5010,
         "externalPort": 5010,
-        "runMode": "release"
+        "runMode": "release",
+        "defaultADminPassword":"41524152sjd_B"
+
     },
     "logger": {
         "filePath": "logs/logs.log",
