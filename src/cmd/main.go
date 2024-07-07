@@ -5,6 +5,7 @@ import (
 	"github.com/sajadblnyn/autocar-apis/config"
 	"github.com/sajadblnyn/autocar-apis/data/cache"
 	"github.com/sajadblnyn/autocar-apis/data/db"
+	"github.com/sajadblnyn/autocar-apis/data/db/migrations"
 	"github.com/sajadblnyn/autocar-apis/pkg/logging"
 )
 
@@ -23,9 +24,11 @@ func main() {
 	dbService := db.New()
 	err = dbService.Init(cfg)
 	defer dbService.Close()
+
 	if err != nil {
 		logger.Fatal(logging.Database, logging.Startup, err.Error(), nil)
 	}
+	migrations.Up_1(dbService)
 
 	apis.InitServer(cfg)
 

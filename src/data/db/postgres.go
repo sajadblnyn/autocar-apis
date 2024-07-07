@@ -44,6 +44,10 @@ func (p *postgresDb) Close() {
 	conn.Close()
 }
 
+func (p *postgresDb) GetDb() *gorm.DB {
+	return p.dbClient
+}
+
 func newPostgresDb() *postgresDb {
 	return &postgresDb{}
 }
