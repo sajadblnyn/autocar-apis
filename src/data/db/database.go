@@ -1,9 +1,14 @@
 package db
 
 import (
+	"sync"
+
 	"github.com/sajadblnyn/autocar-apis/config"
 	"gorm.io/gorm"
 )
+
+var once sync.Once
+var dbService DbService
 
 type DbService interface {
 	Init(cfg *config.Config) error
@@ -12,5 +17,9 @@ type DbService interface {
 }
 
 func New() DbService {
-	return newPostgresDb()
+	once.Do(func() {
+		dbService = newPostgresDb()
+
+	})
+	return dbService
 }

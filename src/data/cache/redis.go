@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -44,4 +45,27 @@ func (r *redisService) Init(cfg *config.Config) error {
 
 func (r *redisService) Close() {
 	r.redisClient.Close()
+}
+
+func (r *redisService) Set(key string, value interface{}, expireTimeDuration time.Duration) error {
+	v, err := json.Marshal(value)
+	if err != nil {
+		return err
+	}
+	return r.redisClient.Set(key, v, expireTimeDuration).Err()
+}
+
+func (r *redisService) Get(key string, value interface{}) error {
+
+	v, err := r.redisClient.Get(key).Result()
+
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal([]byte(v), value)
+	if err != nil {
+		return err
+	}
+	return nil
 }

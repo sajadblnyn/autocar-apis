@@ -17,7 +17,7 @@ func InitServer(cfg *config.Config) {
 
 	RegisterCustomValidators()
 	RegisterMiddlewares(r, cfg)
-	RegisterRoutes(r)
+	RegisterRoutes(r, cfg)
 
 	r.Run(fmt.Sprintf(":%s", cfg.Server.ExternalPort))
 }
@@ -30,7 +30,7 @@ func RegisterCustomValidators() {
 
 	}
 }
-func RegisterRoutes(r *gin.Engine) {
+func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	v1 := r.Group("/api/v1/")
 	{
 		health := v1.Group("/health")
@@ -39,6 +39,9 @@ func RegisterRoutes(r *gin.Engine) {
 		test := v1.Group("/test")
 		// test.Use(middlewares.TestMiddleware())
 		routers.Test(test)
+
+		users := v1.Group("/users")
+		routers.User(users, cfg)
 	}
 }
 
