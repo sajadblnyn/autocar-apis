@@ -35,3 +35,51 @@ func (u *UserHandler) SendOtp(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(nil, true, 1))
 }
+
+func (u *UserHandler) RegisterByUsername(c *gin.Context) {
+	r := dto.RegisterUserByUsernameRequest{}
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		return
+	}
+
+	err = u.userService.RegisterByUsername(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		return
+	}
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, int(helper.Success)))
+}
+
+func (u *UserHandler) LoginByUsername(c *gin.Context) {
+	r := dto.LoginByUsernameRequest{}
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		return
+	}
+
+	td, err := u.userService.LoginByUsername(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		return
+	}
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))
+}
+
+func (u *UserHandler) LoginOrRegisterByMobile(c *gin.Context) {
+	r := dto.RegisterLoginByMobileRequest{}
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		return
+	}
+
+	td, err := u.userService.LoginOrRegisterByMobile(&r)
+	if err != nil {
+		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		return
+	}
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))
+}

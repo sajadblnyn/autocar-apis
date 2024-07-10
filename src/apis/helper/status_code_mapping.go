@@ -9,7 +9,10 @@ import (
 var OtpStatusCodes map[string]int = map[string]int{
 	service_errors.OtpUsed:     http.StatusConflict,
 	service_errors.NotValidOtp: http.StatusConflict,
-	service_errors.OtpExists:   http.StatusConflict,
+	service_errors.OtpExists:   http.StatusBadRequest,
+
+	service_errors.EmailExists:    http.StatusConflict,
+	service_errors.UsernameExists: http.StatusConflict,
 }
 
 func TranslateOtpErrorToStatusCode(err error) int {

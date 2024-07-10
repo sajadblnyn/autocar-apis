@@ -38,6 +38,8 @@ const (
 
 	// IO
 	RemoveFile SubCategory = "RemoveFile"
+
+	RecoverError SubCategory = "Recover Error"
 )
 
 const (
