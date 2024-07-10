@@ -30,7 +30,7 @@ func (u *UserHandler) SendOtp(c *gin.Context) {
 	err = u.userService.SendOtp(r)
 
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithValidationErrors(nil, false, -1, err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithValidationErrors(nil, false, -1, err))
 		return
 	}
 	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(nil, true, 1))
@@ -46,7 +46,7 @@ func (u *UserHandler) RegisterByUsername(c *gin.Context) {
 
 	err = u.userService.RegisterByUsername(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
 		return
 	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, int(helper.Success)))
@@ -62,7 +62,7 @@ func (u *UserHandler) LoginByUsername(c *gin.Context) {
 
 	td, err := u.userService.LoginByUsername(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
 		return
 	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))
@@ -78,7 +78,7 @@ func (u *UserHandler) LoginOrRegisterByMobile(c *gin.Context) {
 
 	td, err := u.userService.LoginOrRegisterByMobile(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateOtpErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
 		return
 	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))

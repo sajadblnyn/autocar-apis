@@ -15,7 +15,7 @@ var OtpStatusCodes map[string]int = map[string]int{
 	service_errors.UsernameExists: http.StatusConflict,
 }
 
-func TranslateOtpErrorToStatusCode(err error) int {
+func TranslateErrorToStatusCode(err error) int {
 	code, exists := OtpStatusCodes[err.Error()]
 	if !exists {
 		return http.StatusInternalServerError
