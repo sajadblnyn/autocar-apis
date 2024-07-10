@@ -12,4 +12,9 @@ const (
 	EmailExists = "Email exists"
 
 	UsernameExists = "Username exists"
+
+	TokenRequired = "authorization token is required"
+	ExpiredToke   = "authorization token is expired"
+
+	InvalidToken = "authorization token is in valid"
 )

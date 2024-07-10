@@ -6,6 +6,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/sajadblnyn/autocar-apis/apis/dto"
 	"github.com/sajadblnyn/autocar-apis/config"
+	"github.com/sajadblnyn/autocar-apis/constants"
 	"github.com/sajadblnyn/autocar-apis/pkg/logging"
 	"github.com/sajadblnyn/autocar-apis/pkg/service_errors"
 )
@@ -35,14 +36,14 @@ func (t *TokenService) GenerateToken(td *tokenDto) (*dto.TokenDetail, error) {
 	tdl.RefreshTokenExpireTime = time.Now().Add(time.Minute * t.cfg.JWT.RefreshTokenExpireDuration).Unix()
 
 	act := jwt.MapClaims{}
-	act["user_id"] = td.UserId
-	act["username"] = td.Username
-	act["first_name"] = td.FirstName
-	act["last_name"] = td.LastName
-	act["mobile_number"] = td.MobileNumber
-	act["roles"] = td.Roles
-	act["email"] = td.Email
-	act["exp"] = tdl.AccessTokenExpireTime
+	act[constants.UserIdKey] = td.UserId
+	act[constants.UsernameKey] = td.Username
+	act[constants.FirstNameKey] = td.FirstName
+	act[constants.LastNameKey] = td.LastName
+	act[constants.MobileNumberKey] = td.MobileNumber
+	act[constants.RolesKey] = td.Roles
+	act[constants.EmailKey] = td.Email
+	act[constants.ExpireTimeKey] = tdl.AccessTokenExpireTime
 
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, act)
 

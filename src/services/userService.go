@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/sajadblnyn/autocar-apis/apis/dto"
 	"github.com/sajadblnyn/autocar-apis/common"
 	"github.com/sajadblnyn/autocar-apis/config"
@@ -198,12 +196,6 @@ func (u *UserService) LoginByUsername(r *dto.LoginByUsernameRequest) (*dto.Token
 
 func (u *UserService) directLoginByUsername(username string) (*dto.TokenDetail, error) {
 
-	defer func() {
-		err := recover()
-		if err != nil {
-			u.logger.Error(logging.General, logging.RecoverError, fmt.Sprintf("%v", err), nil)
-		}
-	}()
 	var user models.User
 	var err error
 	err = u.getUserWithRolesByUsername(username, &user)
