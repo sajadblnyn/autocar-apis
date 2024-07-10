@@ -15,9 +15,9 @@ import (
 
 func Authentication(cfg *config.Config) gin.HandlerFunc {
 	tokenService := services.NewTokenService(cfg)
-	var err error
-	var claimMap map[string]interface{}
 	return func(ctx *gin.Context) {
+		var err error
+		var claimMap map[string]interface{}
 		auth := ctx.GetHeader(constants.AuthorizationHeaderKey)
 		token := strings.Split(auth, " ")
 		if len(token) < 2 || auth == "" {
