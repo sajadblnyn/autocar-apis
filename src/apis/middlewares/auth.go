@@ -54,3 +54,37 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 
 	}
 }
+
+func Authorization(validRoles []string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		if len(ctx.Keys) < 1 {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, helper.GenerateBaseResponse(nil, false, 300))
+			return
+		}
+
+		var exists bool
+		rolesVal, exists := ctx.Keys[constants.RolesKey]
+
+		if !exists {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, helper.GenerateBaseResponse(nil, false, 301))
+			return
+		}
+		roles := rolesVal.([]interface{})
+
+		mapRoles := make(map[string]int)
+		for _, v := range roles {
+			mapRoles[v.(string)] = 0
+		}
+
+		for _, v := range validRoles {
+			_, exists = mapRoles[v]
+			if exists {
+				ctx.Next()
+				return
+			}
+		}
+		ctx.AbortWithStatusJSON(http.StatusForbidden, helper.GenerateBaseResponse(nil, false, 302))
+
+	}
+}

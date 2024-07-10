@@ -56,8 +56,8 @@ func (t *TokenService) GenerateToken(td *tokenDto) (*dto.TokenDetail, error) {
 	}
 
 	acr := jwt.MapClaims{}
-	acr["user_id"] = td.UserId
-	act["exp"] = tdl.RefreshTokenExpireTime
+	acr[constants.UserIdKey] = td.UserId
+	act[constants.ExpireTimeKey] = tdl.RefreshTokenExpireTime
 	atr := jwt.NewWithClaims(jwt.SigningMethodHS256, acr)
 
 	tdl.RefreshToken, err = atr.SignedString([]byte(t.cfg.JWT.Secret))
