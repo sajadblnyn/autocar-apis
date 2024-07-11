@@ -23,12 +23,12 @@ func Authentication(cfg *config.Config) gin.HandlerFunc {
 		if len(token) < 2 || auth == "" {
 			err = &service_errors.ServiceError{EndUserMessage: service_errors.TokenRequired}
 		} else {
-			claimMap, err = tokenService.GetClaims(token[0])
+			claimMap, err = tokenService.GetClaims(token[1])
 
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
-					err = &service_errors.ServiceError{EndUserMessage: service_errors.ExpiredToke}
+					err = &service_errors.ServiceError{EndUserMessage: service_errors.ExpiredToken}
 				default:
 					err = &service_errors.ServiceError{EndUserMessage: service_errors.InvalidToken}
 
