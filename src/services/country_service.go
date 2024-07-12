@@ -14,7 +14,7 @@ type CountryService struct {
 
 func NewCountryService(cfg *config.Config) *CountryService {
 
-	return &CountryService{base: (NewBaseService[models.Country, dto.CreateUpdateCountryRequest, dto.CreateUpdateCountryRequest, dto.GetCountryResponse](cfg))}
+	return &CountryService{base: (NewBaseService[models.Country, dto.CreateUpdateCountryRequest, dto.CreateUpdateCountryRequest, dto.GetCountryResponse](cfg, []preload{{string: "Cities"}}))}
 }
 
 func (s *CountryService) CreateCountry(c context.Context, r *dto.CreateUpdateCountryRequest) (*dto.GetCountryResponse, error) {
@@ -33,4 +33,8 @@ func (s *CountryService) DeleteCountry(c context.Context, id int) error {
 
 func (s *CountryService) GetCountry(c context.Context, id int) (*dto.GetCountryResponse, error) {
 	return s.base.GetById(c, id)
+}
+
+func (s *CountryService) GetCountryByFilter(c context.Context, req *dto.PaginationInputWithFilter) (*dto.PagedList[dto.GetCountryResponse], error) {
+	return s.base.GetByFilter(c, req)
 }

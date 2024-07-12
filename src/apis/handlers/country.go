@@ -80,3 +80,20 @@ func (h *CountryHandler) GetCountry(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
 }
+
+func (h *CountryHandler) GetCountriesByFilter(c *gin.Context) {
+	req := dto.PaginationInputWithFilter{}
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		return
+	}
+
+	res, err := h.service.GetCountryByFilter(c, &req)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		return
+	}
+
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
+}

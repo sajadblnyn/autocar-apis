@@ -3,6 +3,7 @@ package common
 import (
 	"math"
 	"math/rand"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -18,6 +19,9 @@ var (
 	numberSet      = "0123456789"
 	allCharSet     = lowerCharSet + upperCharSet + specialCharSet + numberSet
 )
+
+var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
+var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
 
 func CheckPassword(password string) bool {
 	cfg := config.GetConfig()
@@ -145,4 +149,10 @@ func GeneratePassword() string {
 		inRune[i], inRune[j] = inRune[j], inRune[i]
 	})
 	return string(inRune)
+}
+
+func ToSnakeCase(str string) string {
+	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
+	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
+	return strings.ToLower(snake)
 }
