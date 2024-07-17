@@ -7,11 +7,12 @@ type CreateUpdateCountryRequest struct {
 type GetCountryResponse struct {
 	Id     int               `json:"id"`
 	Name   string            `json:"name"`
-	Cities []GetCityResponse `json:"cities"`
+	Cities []GetCityResponse `json:"cities,omitempty"`
 }
 
 type CreateUpdateCityRequest struct {
-	Name string `json:"name" binding:"required,alpha,max=20,min=3"`
+	Name      string `json:"name" binding:"required,alpha,max=20,min=3"`
+	CountryId int    `json:"countryId,omitempty"`
 }
 
 type GetCityResponse struct {

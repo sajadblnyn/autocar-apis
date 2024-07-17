@@ -20,7 +20,26 @@ func Up_1(d db.DbService) {
 	user_role := models.UserRole{}
 	role := models.Role{}
 	user := models.User{}
-	createTablesIfNotExists(database, city, country, user, role, user_role)
+	persianYear := models.PersianYear{}
+	color := models.Color{}
+	file := models.File{}
+	gearbox := models.Gearbox{}
+	carType := models.CarType{}
+	company := models.Company{}
+	propertyCategory := models.PropertyCategory{}
+	property := models.Property{}
+	carModel := models.CarModel{}
+	carModelColor := models.CarModelColor{}
+	carModelYear := models.CarModelYear{}
+	carModelImage := models.CarModelImage{}
+	carModelPriceHistory := models.CarModelPriceHistory{}
+	carModelProperty := models.CarModelProperty{}
+	carModelComment := models.CarModelComment{}
+
+	createTablesIfNotExists(database, country, city, user, role, user_role,
+		persianYear, color, file, gearbox, carType, company, propertyCategory,
+		property, carModel, carModelColor, carModelYear, carModelImage,
+		carModelPriceHistory, carModelProperty, carModelComment)
 
 	createDefaultInformation(database)
 	createCountry(database)
