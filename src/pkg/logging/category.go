@@ -11,6 +11,7 @@ const (
 	CacheService    Category = "CacheService"
 	Validation      Category = "Validation"
 	RequestResponse Category = "RequestResponse"
+	Io              Category = "Io"
 )
 
 const (
@@ -38,6 +39,7 @@ const (
 
 	// IO
 	RemoveFile SubCategory = "RemoveFile"
+	UploadFile SubCategory = "UploadFile"
 
 	RecoverError SubCategory = "Recover Error"
 )
