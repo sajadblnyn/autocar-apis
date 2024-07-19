@@ -17,8 +17,6 @@ import (
 	"github.com/sajadblnyn/autocar-apis/services"
 )
 
-var logger logging.Logger
-
 type FileHandler struct {
 	service *services.FileService
 }
@@ -33,7 +31,7 @@ func (h *FileHandler) CreateFile(c *gin.Context) {
 	err := c.ShouldBind(&req)
 
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, (helper.ValidationError), err))
 		return
 	}
 	createFileReq := dto.CreateFileRequest{}
@@ -44,18 +42,18 @@ func (h *FileHandler) CreateFile(c *gin.Context) {
 
 	if err != nil {
 		logger.Error(logging.Io, logging.UploadFile, err.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
 
 	res, err := h.service.CreateFile(c, &createFileReq)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 
 	}
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, (helper.Success)))
 
 }
 
@@ -102,71 +100,35 @@ func saveFile(file *multipart.FileHeader, dir string) (string, error) {
 }
 
 func (h *FileHandler) UpdateFile(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Params.ByName("id"))
-
-	req := dto.UpdateFileRequest{}
-	err := c.ShouldBindJSON(&req)
-
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
-		return
-	}
-	res, err := h.service.UpdateFile(c, id, &req)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
-		return
-
-	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
-
+	Update(c, h.service.UpdateFile)
 }
 
 func (h *FileHandler) DeleteFile(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Params.ByName("id"))
 	f, err := h.service.GetFile(c, id)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
 	err = os.Remove(f.Directory + "/" + f.Name)
 	if err != nil {
 		logger.Error(logging.Io, logging.RemoveFile, err.Error(), nil)
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
 	err = h.service.DeleteFile(c, id)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, int(helper.Success)))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, (helper.Success)))
 }
 
 func (h *FileHandler) GetFile(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Params.ByName("id"))
-	res, err := h.service.GetFile(c, id)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
-		return
-
-	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
+	GetById(c, h.service.GetFile)
 }
 
 func (h *FileHandler) GetFilesByFilter(c *gin.Context) {
-	req := dto.PaginationInputWithFilter{}
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
-		return
-	}
-
-	res, err := h.service.GetFileByFilter(c, &req)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
-		return
-	}
-
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, int(helper.Success)))
+	GetByFilter(c, h.service.GetFileByFilter)
 }

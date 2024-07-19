@@ -15,11 +15,11 @@ func RecoveryErrors(c *gin.Context, err any) {
 	er, ok := err.(error)
 	if ok {
 		logger.Error(logging.General, logging.RecoverError, fmt.Sprintf("%v", err), nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), er))
+		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), er))
 		return
 	}
 
 	logger.Error(logging.General, logging.RecoverError, fmt.Sprintf("%v", err), nil)
-	c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithAnyError(nil, false, int(helper.InternalError), err))
+	c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithAnyError(nil, false, (helper.InternalError), err))
 
 }

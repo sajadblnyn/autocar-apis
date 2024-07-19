@@ -40,46 +40,46 @@ func (u *UserHandler) RegisterByUsername(c *gin.Context) {
 	r := dto.RegisterUserByUsernameRequest{}
 	err := c.ShouldBindJSON(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, (helper.ValidationError), err))
 		return
 	}
 
 	err = u.userService.RegisterByUsername(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, int(helper.Success)))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, (helper.Success)))
 }
 
 func (u *UserHandler) LoginByUsername(c *gin.Context) {
 	r := dto.LoginByUsernameRequest{}
 	err := c.ShouldBindJSON(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, (helper.ValidationError), err))
 		return
 	}
 
 	td, err := u.userService.LoginByUsername(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, (helper.Success)))
 }
 
 func (u *UserHandler) LoginOrRegisterByMobile(c *gin.Context) {
 	r := dto.RegisterLoginByMobileRequest{}
 	err := c.ShouldBindJSON(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, int(helper.ValidationError), err))
+		c.AbortWithStatusJSON(http.StatusBadRequest, helper.GenerateBaseResponseWithValidationErrors(nil, false, (helper.ValidationError), err))
 		return
 	}
 
 	td, err := u.userService.LoginOrRegisterByMobile(&r)
 	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, int(helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, int(helper.Success)))
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse(td, true, (helper.Success)))
 }
