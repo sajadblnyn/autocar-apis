@@ -55,6 +55,14 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		file.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.File(file, cfg)
 
+		property := v1.Group("/properties")
+		property.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Property(property, cfg)
+
+		propertyCategory := v1.Group("/property-categories")
+		property.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.PropertyCategory(propertyCategory, cfg)
+
 	}
 }
 
