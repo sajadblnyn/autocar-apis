@@ -75,6 +75,18 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		company.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.Company(company, cfg)
 
+		carModel := v1.Group("/car-models")
+		carModel.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModel(carModel, cfg)
+
+		color := v1.Group("/colors")
+		color.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Color(color, cfg)
+
+		carModelColor := v1.Group("/car-model-colors")
+		carModelColor.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelColor(carModelColor, cfg)
+
 	}
 }
 

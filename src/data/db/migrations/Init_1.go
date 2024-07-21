@@ -47,7 +47,7 @@ func Up_1(d db.DbService) {
 	createCountry(database)
 	createCarType(database)
 	createGearbox(database)
-
+	createColor(database)
 	logger.Info(logging.Database, logging.Migration, "initial migration (up_1) has done successfully", nil)
 }
 
@@ -88,6 +88,18 @@ func createCarType(database *gorm.DB) {
 		database.Create(&models.CarType{Name: "Sports"})
 		database.Create(&models.CarType{Name: "Coupe"})
 		database.Create(&models.CarType{Name: "Hatchback"})
+	}
+}
+func createColor(database *gorm.DB) {
+	count := 0
+	database.
+		Model(&models.Color{}).
+		Select("count(*)").
+		Find(&count)
+	if count == 0 {
+		database.Create(&models.Color{Name: "Black", HexCode: "#000000"})
+		database.Create(&models.Color{Name: "White", HexCode: "#ffffff"})
+		database.Create(&models.Color{Name: "Blue", HexCode: "#0000ff"})
 	}
 }
 

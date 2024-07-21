@@ -38,3 +38,14 @@ func File(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetFilesByFilter)
 
 }
+
+func Color(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewColorHandler(cfg)
+
+	r.POST("/", h.CreateColor)
+	r.PUT("/:id", h.UpdateColor)
+	r.GET("/:id", h.GetColor)
+	r.DELETE("/:id", h.DeleteColor)
+	r.POST("/filter", h.GetColorsByFilter)
+
+}

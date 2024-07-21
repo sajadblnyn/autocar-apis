@@ -51,3 +51,17 @@ type GetFileResponse struct {
 	Directory   string `json:"directory"`
 	MediaType   string `json:"mediaType"`
 }
+
+type CreateColorRequest struct {
+	Name    string `json:"name" binding:"required,alpha,max=15,min=3"`
+	HexCode string `json:"hexCode" binding:"required,max=7,min=7"`
+}
+type UpdateColorRequest struct {
+	Name    string `json:"name,omitempty" binding:"alpha,max=15,min=3"`
+	HexCode string `json:"hexCode,omitempty" binding:"max=7,min=7"`
+}
+
+type ColorResponse struct {
+	Name    string `json:"name"`
+	HexCode string `json:"hexCode"`
+}

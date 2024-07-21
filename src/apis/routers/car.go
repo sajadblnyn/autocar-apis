@@ -38,3 +38,25 @@ func Company(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetCompaniesByFilter)
 
 }
+
+func CarModel(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelHandler(cfg)
+
+	r.POST("/", h.CreateCarModel)
+	r.PUT("/:id", h.UpdateCarModel)
+	r.GET("/:id", h.GetCarModel)
+	r.DELETE("/:id", h.DeleteCarModel)
+	r.POST("/filter", h.GetCarModelsByFilter)
+
+}
+
+func CarModelColor(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelColorHandler(cfg)
+
+	r.POST("/", h.CreateCarModelColor)
+	r.PUT("/:id", h.UpdateCarModelColor)
+	r.GET("/:id", h.GetCarModelColor)
+	r.DELETE("/:id", h.DeleteCarModelColor)
+	r.POST("/filter", h.GetCarModelColorsByFilter)
+
+}
