@@ -45,6 +45,8 @@ func Up_1(d db.DbService) {
 	createPropertyCategory(database)
 
 	createCountry(database)
+	createCarType(database)
+	createGearbox(database)
 
 	logger.Info(logging.Database, logging.Migration, "initial migration (up_1) has done successfully", nil)
 }
@@ -74,6 +76,33 @@ func createDefaultUserInformation(d *gorm.DB) {
 	createAdminUserIfNotExists(d, &user, adminRole.Id)
 
 }
+func createCarType(database *gorm.DB) {
+	count := 0
+	database.
+		Model(&models.CarType{}).
+		Select("count(*)").
+		Find(&count)
+	if count == 0 {
+		database.Create(&models.CarType{Name: "Crossover"})
+		database.Create(&models.CarType{Name: "Sedan"})
+		database.Create(&models.CarType{Name: "Sports"})
+		database.Create(&models.CarType{Name: "Coupe"})
+		database.Create(&models.CarType{Name: "Hatchback"})
+	}
+}
+
+func createGearbox(database *gorm.DB) {
+	count := 0
+	database.
+		Model(&models.Gearbox{}).
+		Select("count(*)").
+		Find(&count)
+	if count == 0 {
+		database.Create(&models.Gearbox{Name: "Manual"})
+		database.Create(&models.Gearbox{Name: "Automatic"})
+	}
+}
+
 func createPropertyCategory(database *gorm.DB) {
 	count := 0
 
@@ -202,34 +231,58 @@ func createCountry(database *gorm.DB) {
 			{Name: "Shiraz"},
 			{Name: "Chalus"},
 			{Name: "Ahwaz"},
+		}, Companies: []models.Company{
+			{Name: "Saipa"},
+			{Name: "Iran khodro"},
 		}})
 		database.Create(&models.Country{Name: "USA", Cities: []models.City{
 			{Name: "New York"},
 			{Name: "Washington"},
+		}, Companies: []models.Company{
+			{Name: "Tesla"},
+			{Name: "Jeep"},
 		}})
 		database.Create(&models.Country{Name: "Germany", Cities: []models.City{
 			{Name: "Berlin"},
 			{Name: "Munich"},
+		}, Companies: []models.Company{
+			{Name: "Opel"},
+			{Name: "Benz"},
 		}})
 		database.Create(&models.Country{Name: "China", Cities: []models.City{
 			{Name: "Beijing"},
 			{Name: "Shanghai"},
+		}, Companies: []models.Company{
+			{Name: "Chery"},
+			{Name: "Geely"},
 		}})
 		database.Create(&models.Country{Name: "Italy", Cities: []models.City{
 			{Name: "Roma"},
 			{Name: "Turin"},
+		}, Companies: []models.Company{
+			{Name: "Ferrari"},
+			{Name: "Fiat"},
 		}})
 		database.Create(&models.Country{Name: "France", Cities: []models.City{
 			{Name: "Paris"},
 			{Name: "Lyon"},
+		}, Companies: []models.Company{
+			{Name: "Renault"},
+			{Name: "Bugatti"},
 		}})
 		database.Create(&models.Country{Name: "Japan", Cities: []models.City{
 			{Name: "Tokyo"},
 			{Name: "Kyoto"},
+		}, Companies: []models.Company{
+			{Name: "Toyota"},
+			{Name: "Honda"},
 		}})
 		database.Create(&models.Country{Name: "South Korea", Cities: []models.City{
 			{Name: "Seoul"},
 			{Name: "Ulsan"},
+		}, Companies: []models.Company{
+			{Name: "Kia"},
+			{Name: "Hyundai"},
 		}})
 	}
 }

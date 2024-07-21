@@ -20,7 +20,7 @@ func (t *TestHandler) BindQuery(c *gin.Context) {
 	}{
 		Id: c.Query("id"),
 	}, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindQueryArray(c *gin.Context) {
@@ -28,14 +28,14 @@ func (t *TestHandler) BindQueryArray(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"Ids": c.QueryArray("id"),
 	}, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindHeader1(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"UserId": c.GetHeader("UserId"),
 	}, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindHeader2(c *gin.Context) {
@@ -45,7 +45,7 @@ func (t *TestHandler) BindHeader2(c *gin.Context) {
 	}{}
 	c.ShouldBindHeader(&h)
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(h, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindJsonBody(c *gin.Context) {
@@ -60,7 +60,7 @@ func (t *TestHandler) BindJsonBody(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(b, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindForm(c *gin.Context) {
@@ -70,7 +70,7 @@ func (t *TestHandler) BindForm(c *gin.Context) {
 	}{}
 	c.ShouldBind(&b)
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(b, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindFormFile(c *gin.Context) {
@@ -86,12 +86,12 @@ func (t *TestHandler) BindFormFile(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"file": f.Filename,
 	}, true, 1))
-	return
+
 }
 
 func (t *TestHandler) BindUri(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse(gin.H{
 		"id": c.Param("id"),
 	}, true, 1))
-	return
+
 }

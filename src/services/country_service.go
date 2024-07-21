@@ -14,7 +14,7 @@ type CountryService struct {
 
 func NewCountryService(cfg *config.Config) *CountryService {
 
-	return &CountryService{base: (NewBaseService[models.Country, dto.CreateUpdateCountryRequest, dto.CreateUpdateCountryRequest, dto.GetCountryResponse](cfg, []preload{{string: "Cities"}}))}
+	return &CountryService{base: (NewBaseService[models.Country, dto.CreateUpdateCountryRequest, dto.CreateUpdateCountryRequest, dto.GetCountryResponse](cfg, []preload{{string: "Cities"}, {string: "Companies"}}))}
 }
 
 func (s *CountryService) CreateCountry(c context.Context, r *dto.CreateUpdateCountryRequest) (*dto.GetCountryResponse, error) {

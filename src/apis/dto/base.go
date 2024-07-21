@@ -7,9 +7,10 @@ type CreateUpdateCountryRequest struct {
 }
 
 type GetCountryResponse struct {
-	Id     int               `json:"id"`
-	Name   string            `json:"name"`
-	Cities []GetCityResponse `json:"cities,omitempty"`
+	Id        int               `json:"id"`
+	Name      string            `json:"name"`
+	Cities    []GetCityResponse `json:"cities,omitempty"`
+	Companies []CompanyResponse `json:"companies,omitempty"`
 }
 
 type CreateUpdateCityRequest struct {

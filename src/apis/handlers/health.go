@@ -12,7 +12,7 @@ type HealthHandler struct {
 
 func (h *HealthHandler) Health(c *gin.Context) {
 	c.JSON(http.StatusOK, helper.GenerateBaseResponse("im fine", true, 1))
-	return
+
 }
 
 func NewHealthHandler() (h *HealthHandler) {
