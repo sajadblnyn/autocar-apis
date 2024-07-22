@@ -60,3 +60,14 @@ func CarModelColor(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetCarModelColorsByFilter)
 
 }
+
+func CarModelPersianYear(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelPersianYearHandler(cfg)
+
+	r.POST("/", h.CreateCarModelPersianYear)
+	r.PUT("/:id", h.UpdateCarModelPersianYear)
+	r.GET("/:id", h.GetCarModelPersianYear)
+	r.DELETE("/:id", h.DeleteCarModelPersianYear)
+	r.POST("/filter", h.GetCarModelPersianYearsByFilter)
+
+}

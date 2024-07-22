@@ -1,6 +1,9 @@
 package dto
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+	"time"
+)
 
 type CreateUpdateCountryRequest struct {
 	Name string `json:"name" binding:"required,alpha,max=20,min=3"`
@@ -62,6 +65,34 @@ type UpdateColorRequest struct {
 }
 
 type ColorResponse struct {
+	Id      int    `json:"id"`
 	Name    string `json:"name"`
 	HexCode string `json:"hexCode"`
+}
+
+type CreatePersianYearRequest struct {
+	PersianTitle string    `json:"persianTitle" binding:"required,max=4,min=4"`
+	Year         int       `json:"year" binding:"required"`
+	StartAt      time.Time `json:"startAt" binding:"required"`
+	EndAt        time.Time `json:"endAt" binding:"required"`
+}
+
+type UpdatePersianYearRequest struct {
+	PersianTitle string    `json:"persianTitle,omitempty" binding:"max=4,min=4"`
+	Year         int       `json:"year,omitempty"`
+	StartAt      time.Time `json:"startAt,omitempty"`
+	EndAt        time.Time `json:"endAt,omitempty"`
+}
+
+type PersianYearResponse struct {
+	Id           int       `json:"id"`
+	PersianTitle string    `json:"persianTitle"`
+	Year         int       `json:"year"`
+	StartAt      time.Time `json:"startAt"`
+	EndAt        time.Time `json:"endAt"`
+}
+
+type PersianYearWithoutDateResponse struct {
+	Id           int    `json:"id"`
+	PersianTitle string `json:"persianTitle"`
 }

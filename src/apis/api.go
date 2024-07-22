@@ -87,6 +87,14 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		carModelColor.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelColor(carModelColor, cfg)
 
+		year := v1.Group("/persian-years")
+		year.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.PersianYear(year, cfg)
+
+		carModelYear := v1.Group("/car-model-years")
+		carModelYear.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelPersianYear(carModelYear, cfg)
+
 	}
 }
 
