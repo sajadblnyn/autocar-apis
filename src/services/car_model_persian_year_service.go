@@ -15,7 +15,7 @@ type CarModelPersianYearService struct {
 func NewCarModelPersianYearService(cfg *config.Config) *CarModelPersianYearService {
 
 	return &CarModelPersianYearService{base: (NewBaseService[models.CarModelYear, dto.CreateCarModelPersianYearRequest, dto.UpdateCarModelPersianYearRequest, dto.CarModelPersianYearResponse](cfg, []preload{
-		{string: "PersianYear"}}))}
+		{string: "PersianYear"}, {string: "CarModelPriceHistories"}}))}
 }
 
 func (s *CarModelPersianYearService) CreateCarModelPersianYear(c context.Context, r *dto.CreateCarModelPersianYearRequest) (*dto.CarModelPersianYearResponse, error) {

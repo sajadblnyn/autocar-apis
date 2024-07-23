@@ -16,7 +16,7 @@ func NewCarModelService(cfg *config.Config) *CarModelService {
 
 	return &CarModelService{base: (NewBaseService[models.CarModel, dto.CreateCarModelRequest, dto.UpdateCarModelRequest, dto.CarModelResponse](cfg, []preload{
 		{string: "CarType"}, {string: "Gearbox"},
-		{string: "CarModelColors.Color"}, {string: "CarModelYears.PersianYear"},
+		{string: "CarModelColors.Color"}, {string: "CarModelYears.PersianYear"}, {string: "CarModelYears.CarModelPriceHistories"},
 		{string: "CarModelProperties.Property.Category"}, {string: "CarModelImages.Image"},
 		{string: "Company.Country"}, {string: "CarModelComments.User"}}))}
 }

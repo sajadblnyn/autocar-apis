@@ -95,6 +95,10 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		carModelYear.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelPersianYear(carModelYear, cfg)
 
+		carModelYearPrHistory := v1.Group("/car-model-year-price-histories")
+		carModelYearPrHistory.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelPriceHistory(carModelYearPrHistory, cfg)
+
 	}
 }
 

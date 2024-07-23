@@ -71,3 +71,14 @@ func CarModelPersianYear(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetCarModelPersianYearsByFilter)
 
 }
+
+func CarModelPriceHistory(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelPriceHistoryHandler(cfg)
+
+	r.POST("/", h.CreateCarModelPriceHistory)
+	r.PUT("/:id", h.UpdateCarModelPriceHistory)
+	r.GET("/:id", h.GetCarModelPriceHistory)
+	r.DELETE("/:id", h.DeleteCarModelPriceHistory)
+	r.POST("/filter", h.GetCarModelPriceHistoriesByFilter)
+
+}
