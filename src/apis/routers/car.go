@@ -82,3 +82,14 @@ func CarModelPriceHistory(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetCarModelPriceHistoriesByFilter)
 
 }
+
+func CarModelImage(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelImageHandler(cfg)
+
+	r.POST("/", h.CreateCarModelImage)
+	r.PUT("/:id", h.UpdateCarModelImage)
+	r.GET("/:id", h.GetCarModelImage)
+	r.DELETE("/:id", h.DeleteCarModelImage)
+	r.POST("/filter", h.GetCarModelImagesByFilter)
+
+}

@@ -95,9 +95,15 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		carModelYear.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelPersianYear(carModelYear, cfg)
 
+		carModelImage := v1.Group("/car-model-images")
+		carModelImage.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelImage(carModelImage, cfg)
+
 		carModelYearPrHistory := v1.Group("/car-model-year-price-histories")
 		carModelYearPrHistory.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelPriceHistory(carModelYearPrHistory, cfg)
+
+		r.Static("files", "../cmd/files")
 
 	}
 }
