@@ -51,17 +51,18 @@ type UpdateCarModelRequest struct {
 	GearboxId int    `json:"gearboxId,omitempty"`
 }
 type CarModelResponse struct {
-	Id             int                           `json:"id"`
-	Name           string                        `json:"name"`
-	CompanyId      int                           `json:"companyId"`
-	CarTypeId      int                           `json:"carTypeId"`
-	GearboxId      int                           `json:"gearboxId"`
-	Company        CompanyResponse               `json:"company"`
-	Gearbox        GearboxResponse               `json:"gearbox"`
-	CarType        CarTypeResponse               `json:"carType"`
-	CarModelColors []CarModelColorResponse       `json:"carModelColors,omitempty"`
-	CarModelYears  []CarModelPersianYearResponse `json:"carModelYears,omitempty"`
-	CarModelImages []CarModelImageResponse       `json:"carModelImages,omitempty"`
+	Id                 int                           `json:"id"`
+	Name               string                        `json:"name"`
+	CompanyId          int                           `json:"companyId"`
+	CarTypeId          int                           `json:"carTypeId"`
+	GearboxId          int                           `json:"gearboxId"`
+	Company            CompanyResponse               `json:"company"`
+	Gearbox            GearboxResponse               `json:"gearbox"`
+	CarType            CarTypeResponse               `json:"carType"`
+	CarModelColors     []CarModelColorResponse       `json:"carModelColors,omitempty"`
+	CarModelYears      []CarModelPersianYearResponse `json:"carModelYears,omitempty"`
+	CarModelImages     []CarModelImageResponse       `json:"carModelImages,omitempty"`
+	CarModelProperties []CarModelPropertyResponse    `json:"carModelProperties,omitempty"`
 }
 
 type CreateCarModelColorRequest struct {
@@ -118,13 +119,31 @@ type CreateCarModelImageRequest struct {
 	CarModelId  int  `json:"carModelId" binding:"required"`
 	IsMainImage bool `json:"isMainImage"`
 }
-type UpdateCarModelImageYearRequest struct {
+type UpdateCarModelImageRequest struct {
 	IsMainImage bool `json:"isMainImage"`
 }
 
 type CarModelImageResponse struct {
+	Id          int             `json:"id"`
 	ImageId     int             `json:"imageId"`
 	CarModelId  int             `json:"carModelId"`
 	IsMainImage bool            `json:"isMainImage"`
 	Image       GetFileResponse `json:"image"`
+}
+
+type CreateCarModelPropertyRequest struct {
+	CarModelId int    `json:"carModelId" binding:"required"`
+	PropertyId int    `json:"propertyId" binding:"required"`
+	Value      string `json:"value" binding:"required,max=100"`
+}
+type UpdateCarModelPropertyRequest struct {
+	Value string `json:"value" binding:"max=100"`
+}
+
+type CarModelPropertyResponse struct {
+	Id         int                 `json:"id"`
+	CarModelId int                 `json:"carModelId"`
+	PropertyId int                 `json:"propertyId"`
+	Property   GetPropertyResponse `json:"property"`
+	Value      string              `json:"value"`
 }

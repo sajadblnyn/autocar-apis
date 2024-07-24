@@ -93,3 +93,14 @@ func CarModelImage(r *gin.RouterGroup, cfg *config.Config) {
 	r.POST("/filter", h.GetCarModelImagesByFilter)
 
 }
+
+func CarModelProperty(r *gin.RouterGroup, cfg *config.Config) {
+	h := handlers.NewCarModelPropertyHandler(cfg)
+
+	r.POST("/", h.CreateCarModelProperty)
+	r.PUT("/:id", h.UpdateCarModelProperty)
+	r.GET("/:id", h.GetCarModelProperty)
+	r.DELETE("/:id", h.DeleteCarModelProperty)
+	r.POST("/filter", h.GetCarModelPropertiesByFilter)
+
+}

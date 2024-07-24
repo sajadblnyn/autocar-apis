@@ -9,12 +9,12 @@ import (
 )
 
 type CarModelImageService struct {
-	base *BaseService[models.CarModelImage, dto.CreateCarModelImageRequest, dto.UpdateCarModelImageYearRequest, dto.CarModelImageResponse]
+	base *BaseService[models.CarModelImage, dto.CreateCarModelImageRequest, dto.UpdateCarModelImageRequest, dto.CarModelImageResponse]
 }
 
 func NewCarModelImageService(cfg *config.Config) *CarModelImageService {
 
-	return &CarModelImageService{base: (NewBaseService[models.CarModelImage, dto.CreateCarModelImageRequest, dto.UpdateCarModelImageYearRequest, dto.CarModelImageResponse](cfg, []preload{
+	return &CarModelImageService{base: (NewBaseService[models.CarModelImage, dto.CreateCarModelImageRequest, dto.UpdateCarModelImageRequest, dto.CarModelImageResponse](cfg, []preload{
 		{string: "Image"}}))}
 }
 
@@ -22,7 +22,7 @@ func (s *CarModelImageService) CreateCarModelImage(c context.Context, r *dto.Cre
 	return s.base.Create(c, r)
 }
 
-func (s *CarModelImageService) UpdateCarModelImage(c context.Context, id int, r *dto.UpdateCarModelImageYearRequest) (*dto.CarModelImageResponse, error) {
+func (s *CarModelImageService) UpdateCarModelImage(c context.Context, id int, r *dto.UpdateCarModelImageRequest) (*dto.CarModelImageResponse, error) {
 	return s.base.Update(c, id, r)
 }
 
