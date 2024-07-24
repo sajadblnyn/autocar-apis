@@ -14,7 +14,8 @@ var OtpStatusCodes map[string]int = map[string]int{
 	service_errors.EmailExists:    http.StatusConflict,
 	service_errors.UsernameExists: http.StatusConflict,
 
-	service_errors.RecordNotFound: http.StatusNotFound,
+	service_errors.RecordNotFound:   http.StatusNotFound,
+	service_errors.PermissionDenied: http.StatusForbidden,
 }
 
 func TranslateErrorToStatusCode(err error) int {

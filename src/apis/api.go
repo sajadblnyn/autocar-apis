@@ -99,6 +99,10 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		carModelImage.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelImage(carModelImage, cfg)
 
+		carModelComment := v1.Group("/car-model-comments")
+		carModelComment.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin", "default"}))
+		routers.CarModelComment(carModelComment, cfg)
+
 		carModelProperty := v1.Group("/car-model-properties")
 		carModelProperty.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelProperty(carModelProperty, cfg)

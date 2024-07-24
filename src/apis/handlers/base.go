@@ -23,7 +23,7 @@ func Create[Ti any, To any](c *gin.Context, caller func(ctx context.Context, req
 
 	res, err := caller(c, req)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
+		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err), helper.GenerateBaseResponseWithError(nil, false, (helper.InternalError), err))
 		return
 
 	}
