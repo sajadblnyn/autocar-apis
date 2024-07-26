@@ -16,6 +16,7 @@ import (
 	"github.com/sajadblnyn/autocar-apis/data/db"
 	"github.com/sajadblnyn/autocar-apis/data/models"
 	"github.com/sajadblnyn/autocar-apis/pkg/logging"
+	"github.com/sajadblnyn/autocar-apis/pkg/metrics"
 	"github.com/sajadblnyn/autocar-apis/pkg/service_errors"
 	"gorm.io/gorm"
 )
@@ -51,9 +52,12 @@ func (s *BaseService[T, Tc, Tu, Tr]) Create(ctx context.Context, r *Tc) (*Tr, er
 	if err != nil {
 		tx.Rollback()
 		s.logger.Error(logging.Database, logging.Insert, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Create", "Failed").Inc()
+
 		return nil, err
 	}
 	tx.Commit()
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Create", "Success").Inc()
 	bm, _ := common.ConvertType[models.BaseModel](model)
 	return s.GetById(ctx, bm.Id)
 
@@ -74,15 +78,19 @@ func (s *BaseService[T, Tc, Tu, Tr]) Update(ctx context.Context, id int, r *Tu) 
 
 	tx := s.db.WithContext(ctx).Begin()
 
-	err = tx.Model(new(T)).Where("id=? and deleted_by is null", id).Updates(snakeMap).Error
+	model := new(T)
+	err = tx.Model(model).Where("id=? and deleted_by is null", id).Updates(snakeMap).Error
 
 	if err != nil {
 		tx.Rollback()
 		s.logger.Error(logging.Database, logging.Update, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Update", "Failed").Inc()
 
 		return nil, err
 	}
 	tx.Commit()
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Update", "Success").Inc()
+
 	return s.GetById(ctx, id)
 }
 
@@ -95,14 +103,19 @@ func (s *BaseService[T, Tc, Tu, Tr]) Delete(ctx context.Context, id int) error {
 	(updateMap)["deleted_at"] = sql.NullTime{Valid: true, Time: time.Now().UTC()}
 	(updateMap)["deleted_by"] = &sql.NullInt64{Valid: true, Int64: int64(ctx.Value(constants.UserIdKey).(float64))}
 
+	model := new(T)
 	tx := s.db.WithContext(ctx).Begin()
-	err := tx.Model(new(T)).Where("id=? and deleted_by is null", id).Updates(updateMap).Error
+	err := tx.Model(model).Where("id=? and deleted_by is null", id).Updates(updateMap).Error
 	if err != nil {
 		tx.Rollback()
 		s.logger.Error(logging.Database, logging.Delete, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Delete", "Failed").Inc()
+
 		return err
 	}
 	tx.Commit()
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Delete", "Success").Inc()
+
 	return nil
 }
 
@@ -114,14 +127,24 @@ func (s *BaseService[T, Tc, Tu, Tr]) GetById(ctx context.Context, id int) (*Tr, 
 	err := databse.Model(model).Where("id=? and deleted_by is null", id).First(&model).Error
 	if err != nil {
 		s.logger.Error(logging.Database, logging.Select, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetById", "Failed").Inc()
 
 		return nil, err
 	}
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetById", "Success").Inc()
 
 	return common.ConvertType[Tr](model)
 }
 func (s *BaseService[T, Tc, Tu, Tr]) GetByFilter(c context.Context, req *dto.PaginationInputWithFilter) (*dto.PagedList[Tr], error) {
-	return Paginate[T, Tr](req, s.Preloads, s.db)
+	model := new(T)
+
+	res, err := Paginate[T, Tr](req, s.Preloads, s.db)
+	if err != nil {
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetByFilter", "Failed").Inc()
+		return nil, err
+	}
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetByFilter", "Success").Inc()
+	return res, nil
 }
 func GetFilterQuery[T any](filter *dto.DynamicFilter) string {
 

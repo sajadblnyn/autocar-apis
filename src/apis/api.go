@@ -6,20 +6,28 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sajadblnyn/autocar-apis/apis/middlewares"
 	"github.com/sajadblnyn/autocar-apis/apis/routers"
 	"github.com/sajadblnyn/autocar-apis/apis/validations"
 	"github.com/sajadblnyn/autocar-apis/config"
+	"github.com/sajadblnyn/autocar-apis/pkg/logging"
+	"github.com/sajadblnyn/autocar-apis/pkg/metrics"
 )
 
+var logger logging.Logger
+
 func InitServer(cfg *config.Config) {
+	logger = logging.NewLogger(cfg)
 	r := gin.New()
 
 	RegisterCustomValidators()
+	RegisterPrometheus()
 	RegisterMiddlewares(r, cfg)
 	RegisterRoutes(r, cfg)
 
-	r.Run(fmt.Sprintf(":%s", cfg.Server.ExternalPort))
+	r.Run(fmt.Sprintf(":%s", cfg.Server.InternalPort))
 }
 
 func RegisterCustomValidators() {
@@ -28,6 +36,18 @@ func RegisterCustomValidators() {
 		v.RegisterValidation("iran-mobile-validator", validations.IranianMobileValidator, true)
 		v.RegisterValidation("password", validations.PasswordValidator, true)
 
+	}
+}
+func RegisterPrometheus() {
+	err := prometheus.Register(metrics.DbCall)
+
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.Startup, err.Error(), nil)
+	}
+	err = prometheus.Register(metrics.HttpDuration)
+
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.Startup, err.Error(), nil)
 	}
 }
 func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
@@ -111,6 +131,8 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		carModelYearPrHistory.Use(middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelPriceHistory(carModelYearPrHistory, cfg)
 
+		r.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
 		r.Static("files", "../cmd/files")
 
 	}
@@ -118,6 +140,7 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 
 func RegisterMiddlewares(r *gin.Engine, cfg *config.Config) {
 	r.Use(middlewares.Cors(cfg))
+	r.Use(middlewares.Prometheus())
 	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(gin.Logger(), gin.CustomRecovery(middlewares.RecoveryErrors) /*, middlewares.TestMiddleware()*/)
 }
