@@ -44,7 +44,7 @@ func (l *zapLogger) getLogLevel() zapcore.Level {
 func (l *zapLogger) Init(cfg *config.Config) {
 	once.Do(func() {
 		w := zapcore.AddSync(&lumberjack.Logger{
-			Filename:   fmt.Sprintf("%s%s.%s", cfg.Logger.FilePath, uuid.New().String(), "json"),
+			Filename:   fmt.Sprintf("%s%s.%s", cfg.Logger.FilePath, uuid.New().String(), "log"),
 			MaxSize:    1,
 			MaxAge:     5,
 			MaxBackups: 10,
