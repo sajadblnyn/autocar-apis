@@ -76,7 +76,7 @@ services:
       - ../src/logs:/var/log/filebeat/service:ro
       #- ../prod/logs:/var/log/filebeat/service:ro
       - logs:/var/log/filebeat
-      - logs:/app:ro
+      - logs:/app/logs:ro
 
     environment:
       FILEBEAT_INTERNAL_PASSWORD: ${FILEBEAT_INTERNAL_PASSWORD:-}

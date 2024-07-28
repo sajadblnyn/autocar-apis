@@ -75,7 +75,9 @@ func structuredLogger(l logging.Logger) gin.HandlerFunc {
 		keys[logging.ResponseBody] = blw.body.String()
 		keys[logging.RequestHeader] = string(byteHeaders)
 
-		l.Info(logging.RequestResponse, logging.Api, "", keys)
+		if path != "/metrics" {
+			l.Info(logging.RequestResponse, logging.Api, "", keys)
+		}
 	}
 
 }

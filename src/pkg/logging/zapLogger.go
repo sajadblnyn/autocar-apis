@@ -1,8 +1,10 @@
 package logging
 
 import (
+	"fmt"
 	"sync"
 
+	"github.com/google/uuid"
 	"github.com/sajadblnyn/autocar-apis/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -42,7 +44,7 @@ func (l *zapLogger) getLogLevel() zapcore.Level {
 func (l *zapLogger) Init(cfg *config.Config) {
 	once.Do(func() {
 		w := zapcore.AddSync(&lumberjack.Logger{
-			Filename:   cfg.Logger.FilePath,
+			Filename:   fmt.Sprintf("%s%s.%s", cfg.Logger.FilePath, uuid.New().String(), "json"),
 			MaxSize:    1,
 			MaxAge:     5,
 			MaxBackups: 10,
