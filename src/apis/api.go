@@ -19,6 +19,7 @@ import (
 var logger logging.Logger
 
 func InitServer(cfg *config.Config) {
+	gin.SetMode(cfg.Server.RunMode)
 	logger = logging.NewLogger(cfg)
 	r := gin.New()
 

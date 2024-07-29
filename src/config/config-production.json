@@ -7,7 +7,7 @@
 
     },
     "logger": {
-        "filePath": "logs/logs.log",
+        "filePath": "logs/",
         "encoding": "json",
         "level": "debug",
         "logger": "zap"

@@ -74,7 +74,7 @@ services:
     volumes:
       - ./elk/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
       - ../src/logs:/var/log/filebeat/service:ro
-      #- ../prod/logs:/var/log/filebeat/service:ro
+      - ../prod/logs:/var/log/filebeat/service:ro
       - logs:/var/log/filebeat
       - logs:/app/logs:ro
 

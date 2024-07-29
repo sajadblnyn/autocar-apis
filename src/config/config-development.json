@@ -6,7 +6,7 @@
         "defaultADminPassword":"41524152sjd_B"
     },
     "logger": {
-        "filePath": "../logs/logs.log",
+        "filePath": "../logs/",
         "encoding": "json",
         "level": "debug",
         "logger": "zap"
